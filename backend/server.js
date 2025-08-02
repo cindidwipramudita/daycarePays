@@ -26,6 +26,7 @@ const allowedOrigins = [
   "http://192.168.0.102:8080", // ⬅️ Tambahkan ini
   "http://localhost:8080", // ⬅️ (opsional, untuk jaga-jaga)
   "https://daycare-pays.vercel.app",
+  "https://daycare-pays-csbc2v3l3-cindidwi30s-projects.vercel.app"
 ];
 
 app.use(
