@@ -20,28 +20,31 @@ dotenv.config();
 const app = express();
 
 // Middleware
+
 const allowedOrigins = [
   "http://localhost:3000",
   "http://192.168.0.102:3000",
-  "http://192.168.0.102:8080", // ⬅️ Tambahkan ini
-  "http://localhost:8080", // ⬅️ (opsional, untuk jaga-jaga)
-  "https://daycare-pays.vercel.app",
-  "https://daycare-pays-csbc2v3l3-cindidwi30s-projects.vercel.app"
+  "http://192.168.0.102:8080",
+  "http://localhost:8080",
+  "https://daycare-pays.vercel.app"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Kalau request tanpa origin (misal dari Postman), izinkan
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Tidak diizinkan oleh CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: function (origin, callback) {
+    console.log("🌐 Incoming Origin:", origin);
+
+    const vercelPattern = /^https:\/\/daycare-pays.*\.vercel\.app$/;
+
+    if (!origin || allowedOrigins.includes(origin) || vercelPattern.test(origin)) {
+      callback(null, true);
+    } else {
+      console.warn("🚫 Origin tidak diizinkan oleh CORS:", origin);
+      callback(new Error("Tidak diizinkan oleh CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 
 app.use(express.json());
 
